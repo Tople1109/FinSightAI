@@ -6,8 +6,17 @@ function QuestionForm() {
   const [answer, setAnswer] = useState("");
 
   const handleAsk = async () => {
-    const response = await axios.post("http://localhost:5000/ask", { question });
-    setAnswer(response.data.answer);
+    try {
+      const response = await axios.post("http://localhost:5050/ask", { question });
+      setAnswer(response.data.answer);
+    } catch (error) {
+      console.error("Ask request failed:", error);
+      if (error.response?.data?.error) {
+        setAnswer("Error: " + error.response.data.error);
+      } else {
+        setAnswer("Error: Could not connect to backend.");
+      }
+    }
   };
 
   return (
