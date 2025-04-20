@@ -1,42 +1,60 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from utils import process_pdf
+import math
 import os
+
+from utils import process_pdf
 
 app = Flask(__name__)
 CORS(app)
-
-# Ensure uploads folder exists
 os.makedirs("uploads", exist_ok=True)
 
-qa_chain = None  # Global chain state
+# globals
+qa_chain   = None
+summary    = ""
+tables     = []
+chart_recs = []
+
+def clean_nans(obj):
+    if isinstance(obj, dict):
+        return {k: clean_nans(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [clean_nans(v) for v in obj]
+    elif isinstance(obj, float) and math.isnan(obj):
+        return None  # NaN → None for JSON
+    else:
+        return obj
 
 @app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['POST'])
 def upload_pdf():
-    global qa_chain
-    file = request.files['pdf']
-    file_path = f'uploads/{file.filename}'
-    file.save(file_path)
-    qa_chain = process_pdf(file_path)
-    return jsonify({"message": "PDF uploaded and processed successfully."})
+    global qa_chain, summary, tables, chart_recs
+
+    f = request.files['pdf']
+    save_path = os.path.join("uploads", f.filename)
+    f.save(save_path)
+
+    qa_chain, summary, tables, chart_recs = process_pdf(save_path)
+
+    return jsonify({
+        "message": "PDF uploaded and processed successfully.",
+        "summary": summary,
+        "tables": clean_nans(tables),
+        "chartRecommendations": chart_recs
+    })
+
 
 @app.route('/ask', methods=['POST'])
-def ask_question():
+def ask():
     global qa_chain
     if qa_chain is None:
-        return jsonify({"error": "No PDF has been processed yet."}), 400
+        return jsonify({"error": "Upload a PDF first."}), 400
 
-    data = request.get_json()
-    question = data.get('question')
-    print("❓ Question:", question)
+    q = request.json.get("question", "").strip()
+    resp = qa_chain.invoke({"query": q})
+    answer = resp.get("result") if isinstance(resp, dict) else resp
+    return jsonify({"answer": answer})
 
-    try:
-        response = qa_chain.invoke({"query": question})
-        print("✅ Answer:", response)
-        return jsonify({"answer": response})
-    except Exception as e:
-        print("❌ Error:", str(e))
-        return jsonify({"error": "Failed to generate answer"}), 500
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5050, debug=True)
