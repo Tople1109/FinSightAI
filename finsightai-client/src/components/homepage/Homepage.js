@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import FileUpload from "./FileUpload";
 import QuestionForm from "./QuestionForm";
 import ChartSelector from "./ChartSelector";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import GroupedInsightCharts from "./GroupedInsightCharts";
 
 function HomePage() {
   const [uploadKey, setUploadKey] = useState(0);
@@ -17,7 +17,7 @@ function HomePage() {
 
     const message = payload?.message ?? "Upload completed";
     const summaryText = (payload?.summary ?? "").trim();
-    const factsArray = payload?.facts ? JSON.parse(payload.facts) : [];
+    const factsArray = Array.isArray(payload?.facts) ? payload.facts : [];
 
     console.log("📩 Message:", message);
     console.log("📄 Summary (raw):", payload?.summary);
@@ -51,34 +51,8 @@ function HomePage() {
           </div>
         )}
       </div>
-
+      {facts.length > 0 && <GroupedInsightCharts facts={facts} />}
       <QuestionForm key={uploadKey} />
-
-      {facts.length > 0 && (
-        <div style={{ marginTop: 20 }}>
-          <h3>📊 Key Insights</h3>
-          <BarChart width={500} height={300} data={facts}>
-            <XAxis
-              dataKey="label"
-              tick={{ fontSize: 10 }}
-              interval={0}
-              angle={-30}
-              textAnchor="end"
-            />
-            <YAxis />
-            <Tooltip />
-            <CartesianGrid strokeDasharray="3 3" />
-            <Bar dataKey="value" fill="#8884d8" />
-          </BarChart>
-        </div>
-      )}
-
-      {charts.length > 0 && tables.length > 0 && (
-        <div style={{ marginTop: 20 }}>
-          <h3>📈 Recommended Charts</h3>
-          <ChartSelector chartRecommendations={charts} tables={tables} />
-        </div>
-      )}
     </div>
   );
 }
