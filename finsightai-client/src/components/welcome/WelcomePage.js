@@ -1,20 +1,27 @@
+// WelcomePage.js
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./WelcomePage.css";
 
+import bgVideo from "./bg_0068.mp4"; // adjust path if needed
+
 export default function WelcomePage() {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    navigate("/homepage");
-  };
-
   return (
-    <div
-      className="container"
-      style={{ backgroundImage: 'url("images/bg3.webp")' }}
-    >
+    <div className="container">
+      {/* animated background */}
+      <video
+        className="bg-video"
+        src={bgVideo}
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+
       <div className="welcome-content">
+        {/* ---------- your existing content ---------- */}
         <h1>Welcome to FinSightAI</h1>
         <p>
           FinSightAI makes it effortless to extract insights from any PDF
@@ -23,12 +30,11 @@ export default function WelcomePage() {
         </p>
 
         <div className="buttons">
-          <button className="btn-signin" onClick={handleClick}>
+          <button className="btn-signin" onClick={() => navigate("/homepage")}>
             <span>Get Started Now</span>
           </button>
         </div>
 
-        {/* wrap the three cards in a flex‐row */}
         <div className="descpt-row">
           <div className="Descpt-container">
             <h2>Ask a question</h2>
