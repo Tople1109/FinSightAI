@@ -1,0 +1,91 @@
+.container {
+    width: 100%;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    position: relative;
+
+  }
+
+  .welcome-content {
+    padding: 5%;
+    max-width: 800px;
+  }
+
+  h1 {
+    font-size: 5rem;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 10px;
+    width: 300px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    transition: background-color 0.3s;
+  }
+
+  .btn-signin {
+    background: #5a7ee9;
+  }
+
+  .btn-signin:hover {
+    background-color: #1546d9;
+  }
+
+  /* new flex‐row for your description cards /
+  .descpt-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  / your cards */
+  .Descpt-container {
+    background: rgba(255, 254, 254, 0.125);
+    padding: 20px;
+    width: 150px;
+    border-radius: 10px;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.1s;
+  }
+
+  .Descpt-container:hover {
+    background-color: rgba(135, 222, 219, 0.382);
+  }
+
+  .Descpt-container h2 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: #ffffff;
+  }
+
+  .Descpt-container p {
+    font-size: 0.9rem;
+    line-height: 1.2;
+  }

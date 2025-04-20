@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import math
 import os
 
 from utils import process_pdf
@@ -15,34 +14,22 @@ summary    = ""
 tables     = []
 chart_recs = []
 
-def clean_nans(obj):
-    if isinstance(obj, dict):
-        return {k: clean_nans(v) for k, v in obj.items()}
-    elif isinstance(obj, list):
-        return [clean_nans(v) for v in obj]
-    elif isinstance(obj, float) and math.isnan(obj):
-        return None  # NaN → None for JSON
-    else:
-        return obj
-
-@app.route('/upload', methods=['POST'])
 @app.route('/upload', methods=['POST'])
 def upload_pdf():
-    global qa_chain, summary, tables, chart_recs
+    global qa_chain, summary, facts
 
     f = request.files['pdf']
-    save_path = os.path.join("uploads", f.filename)
-    f.save(save_path)
+    path = os.path.join("uploads", f.filename)
+    f.save(path)
 
-    qa_chain, summary, tables, chart_recs = process_pdf(save_path)
+    qa_chain, summary, facts = process_pdf(path)
 
     return jsonify({
         "message": "PDF uploaded and processed successfully.",
         "summary": summary,
-        "tables": clean_nans(tables),
-        "chartRecommendations": chart_recs
+        "facts": facts,
+        "chartRecommendations": [],  # optional if you're skipping raw tables
     })
-
 
 @app.route('/ask', methods=['POST'])
 def ask():
@@ -54,7 +41,6 @@ def ask():
     resp = qa_chain.invoke({"query": q})
     answer = resp.get("result") if isinstance(resp, dict) else resp
     return jsonify({"answer": answer})
-
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5050, debug=True)
