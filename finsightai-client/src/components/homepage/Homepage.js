@@ -3,6 +3,7 @@ import FileUpload from "./FileUpload";
 import QuestionForm from "./QuestionForm";
 import ChartSelector from "./ChartSelector";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import './Homepage.css';
 
 function HomePage() {
   const [uploadKey, setUploadKey] = useState(0);
@@ -37,34 +38,40 @@ function HomePage() {
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <h1>📊 FinsightAI</h1>
+    <div className="homepage">
 
-      <FileUpload onUploadComplete={handleUploadComplete} />
-
-      <div style={{ marginTop: 10 }}>
-        {uploadMessage && <p style={{ color: "green" }}>✅ {uploadMessage}</p>}
-        {summary && (
-          <div>
-            <h3>📋 Summary</h3>
-            <p>{summary}</p>
-          </div>
-        )}
+<header className="app-header">
+<img src="/././logo.png" alt="InSightAI Logo" className="logo" />
+  <nav className="nav-menu">
+    <ul>
+      <li><a href="#upload">Upload</a></li>
+      <li><a href="#summary">Summary</a></li>
+      <li><a href="#insights">Insights</a></li>
+    </ul>
+  </nav>
+</header>
+  
+      <div className="upload-section">
+        <FileUpload onUploadComplete={handleUploadComplete} />
+        {uploadMessage && <p className="upload-message">✅ {uploadMessage}</p>}
       </div>
-
-      <QuestionForm key={uploadKey} />
-
+  
+      {summary && (
+        <div className="summary-section">
+          <h3>📋 Summary</h3>
+          <p>{summary}</p>
+        </div>
+      )}
+  
+      <div className="question-form">
+        <QuestionForm key={uploadKey} />
+      </div>
+  
       {facts.length > 0 && (
-        <div style={{ marginTop: 20 }}>
+        <div className="insights-section">
           <h3>📊 Key Insights</h3>
           <BarChart width={500} height={300} data={facts}>
-            <XAxis
-              dataKey="label"
-              tick={{ fontSize: 10 }}
-              interval={0}
-              angle={-30}
-              textAnchor="end"
-            />
+            <XAxis dataKey="label" tick={{ fontSize: 10 }} interval={0} angle={-30} textAnchor="end" />
             <YAxis />
             <Tooltip />
             <CartesianGrid strokeDasharray="3 3" />
@@ -72,15 +79,15 @@ function HomePage() {
           </BarChart>
         </div>
       )}
-
+  
       {charts.length > 0 && tables.length > 0 && (
-        <div style={{ marginTop: 20 }}>
+        <div className="chart-recommend-section">
           <h3>📈 Recommended Charts</h3>
           <ChartSelector chartRecommendations={charts} tables={tables} />
         </div>
       )}
     </div>
   );
-}
+} 
 
 export default HomePage;

@@ -28,28 +28,19 @@ export default function WelcomePage() {
           </button>
         </div>
 
-        {/* wrap the three cards in a flex‐row */}
-        <div className="descpt-row">
+         {/* wrap the three cards in a flex‐row */}
+         <div className="descpt-row">
           <div className="Descpt-container">
             <h2>Ask a question</h2>
-            <p>
-              Type any question about your PDF to get instant, data‑backed
-              answers.
-            </p>
+            <p>Type any question about your PDF to get instant, data‑backed answers.</p>
           </div>
           <div className="Descpt-container">
             <h2>Top Risk</h2>
-            <p>
-              See the most critical risk factors our AI has identified in your
-              report.
-            </p>
+            <p>See the most critical risk factors our AI has identified in your report.</p>
           </div>
           <div className="Descpt-container">
             <h2>Insight Hub</h2>
-            <p>
-              Explore key analytics—revenue trends, quotes, and growth
-              metrics—all in one place.
-            </p>
+            <p>Explore key analytics—revenue trends, quotes, and growth metrics—all in one place.</p>
           </div>
         </div>
       </div>
