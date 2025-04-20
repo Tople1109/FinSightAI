@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "./QuestionForm.css"; // <- Add this
 
 export default function QuestionForm() {
   const [chatHistory, setChatHistory] = useState(() => {
@@ -52,19 +53,18 @@ export default function QuestionForm() {
   };
 
   return (
-    <div style={{ marginTop: 20 }}>
+    <div className="question-form">
       <input
         type="text"
         placeholder="Ask a question about the report"
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleAsk()}
-        style={{ width: 400 }}
       />
       <button onClick={handleAsk}>Ask</button>
 
       {chatHistory.length > 0 && (
-        <div style={{ marginTop: 20 }}>
+        <div>
           <h3>Chat History</h3>
           <ul>
             {chatHistory.map((item, i) => (
