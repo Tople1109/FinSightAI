@@ -1,4 +1,3 @@
-// src/components/FileUpload.js
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -18,14 +17,12 @@ function FileUpload({ onUploadComplete }) {
       const res = await axios.post("http://localhost:5050/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         timeout: 60000,
-        responseType: "text", // important to treat raw string!
       });
 
-      console.log("✅ Full response:", res);
-      const parsed = JSON.parse(res.data);
-      console.log("📦 Summary from backend:", parsed.summary);
+      console.log("✅ Full response:", res.data);
+      console.log("📦 Summary from backend:", res.data.summary);
 
-      onUploadComplete(parsed);
+      onUploadComplete(res.data);
       setError("");
     } catch (err) {
       console.error("❌ Upload error:", err);
@@ -34,7 +31,6 @@ function FileUpload({ onUploadComplete }) {
       setIsLoading(false);
     }
   };
-
   return (
     <div>
       <input

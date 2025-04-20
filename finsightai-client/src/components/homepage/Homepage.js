@@ -18,7 +18,7 @@ function HomePage() {
 
     const message = payload?.message ?? "Upload completed";
     const summaryText = (payload?.summary ?? "").trim();
-    const factsArray = payload?.facts ? JSON.parse(payload.facts) : [];
+    const factsArray = Array.isArray(payload?.facts) ? payload.facts : [];
 
     console.log("📩 Message:", message);
     console.log("📄 Summary (raw):", payload?.summary);
