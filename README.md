@@ -86,7 +86,7 @@ cd finsightai-client
 npm install
 npm start              # opens http://localhost:3000
 ```
-
+#### Then just add the Pdf file and start asking questions :) !!!
 ---
 
 # Conclusion
